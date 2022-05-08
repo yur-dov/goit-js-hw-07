@@ -1,34 +1,31 @@
 import { galleryItems } from './gallery-items.js';
-// Change code below this line
 
-console.log(galleryItems);
+const imageBlock = document.querySelector('.gallery');
 
-const container = document.querySelector('.gallery');
-
-const createGalleryItemMarkup = itemProp => {
+const createGalleryItemMarkup = itemPicture => {
   return `<div class="gallery__item">
-  <a class="gallery__link" href=${itemProp.original}>
+  <a class="gallery__link" href=${itemPicture.original}>
     <img
       class="gallery__image"
-      src=${itemProp.preview}
-      data-source=${itemProp.original}
-      alt=${itemProp.description}
+      src=${itemPicture.preview}
+      data-source=${itemPicture.original}
+      alt=${itemPicture.description}
     />
   </a>
 </div>`;
 };
 
-const allGaleryItems = galleryItems.map(createGalleryItemMarkup).join('');
+const galleryAll = galleryItems.map(createGalleryItemMarkup).join('');
 
-container.insertAdjacentHTML('afterbegin', allGaleryItems);
+imageBlock.insertAdjacentHTML('afterbegin', galleryAll);
 
-container.addEventListener('click', onOpenModal);
+imageBlock.addEventListener('click', onOpenModal);
 
 function onOpenModal(event) {
   event.preventDefault();
   const largeImageLink = event.target.dataset.source;
 
-  const modal = basicLightbox.create(
+  const modalBlock = basicLightbox.create(
     `
     <img
       class="gallery__image"
@@ -38,10 +35,10 @@ function onOpenModal(event) {
     />
 `,
     {
-      onShow: modal => {
+      onShow: modalBlock => {
         window.addEventListener('keydown', escapeKeyCloseModal);
       },
-      onClose: modal => {
+      onClose: modalBlock => {
         window.removeEventListener('keydown', escapeKeyCloseModal);
       },
     }
@@ -49,9 +46,8 @@ function onOpenModal(event) {
 
   function escapeKeyCloseModal(event) {
     if (event.code === 'Escape') {
-      modal.close();
+      modalBlock.close();
     }
   }
-
-  modal.show();
+  modalBlock.show();
 }
